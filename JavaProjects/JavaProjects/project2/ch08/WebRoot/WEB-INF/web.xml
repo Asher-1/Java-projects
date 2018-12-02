@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.4" 
+	xmlns="http://java.sun.com/xml/ns/j2ee" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
+	http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+ 
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>Login</servlet-name>
+    <servlet-class>Servlets.Login</servlet-class>
+ </servlet><servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>CategoryAdmin</servlet-name>
+    <servlet-class>Servlets.CategoryAdmin</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>Logout</servlet-name>
+    <servlet-class>Servlets.Logout</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>GoodAdmin</servlet-name>
+    <servlet-class>Servlets.GoodAdmin</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>UserAdmin</servlet-name>
+    <servlet-class>Servlets.UserAdmin</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>MessageAdmin</servlet-name>
+    <servlet-class>Servlets.MessageAdmin</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>SysAdmin</servlet-name>
+    <servlet-class>Servlets.SysAdmin</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>ChangePass</servlet-name>
+    <servlet-class>Servlets.ChangePass</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>MyEbay</servlet-name>
+    <servlet-class>Servlets.MyEbay</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>MyMsg</servlet-name>
+    <servlet-class>Servlets.MyMsg</servlet-class>
+  </servlet>
+
+
+<filter>
+<filter-name>Set Character Encoding</filter-name>
+<filter-class>Servlets.SetEncodingFilter</filter-class>
+<init-param>
+<param-name>encoding</param-name>
+<param-value>gb2312</param-value>
+</init-param>
+
+</filter>
+
+
+
+  
+ <servlet-mapping>
+    <servlet-name>Login</servlet-name>
+    <url-pattern>/servlet/login</url-pattern>
+ </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>CategoryAdmin</servlet-name>
+    <url-pattern>/servlet/categoryAdmin</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Logout</servlet-name>
+    <url-pattern>/servlet/logout</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>GoodAdmin</servlet-name>
+    <url-pattern>/servlet/goodAdmin</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>UserAdmin</servlet-name>
+    <url-pattern>/servlet/userAdmin</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>MessageAdmin</servlet-name>
+    <url-pattern>/servlet/messageAdmin</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SysAdmin</servlet-name>
+    <url-pattern>/servlet/sysAdmin</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ChangePass</servlet-name>
+    <url-pattern>/servlet/changePass</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>MyEbay</servlet-name>
+    <url-pattern>/servlet/myebay</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>MyMsg</servlet-name>
+    <url-pattern>/servlet/mymsg</url-pattern>
+  </servlet-mapping>
+
+  
+ <resource-ref>
+	<description>DataSource</description>
+	<res-ref-name>jdbc/SchoolEbay</res-ref-name>
+	<res-type>javax.sql.DataSource</res-type>
+	<res-auth>Container</res-auth>
+</resource-ref>
+</web-app>

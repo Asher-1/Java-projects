@@ -1,0 +1,468 @@
+/**
+ * 
+ */
+package cn.detector.view;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.Vector;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTree;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import cn.detector.util.AWTCutPicture;
+import cn.detector.util.FileAcceptFilter;
+import cn.detector.util.Line;
+import cn.detector.util.MyPoint;
+import cn.detector.util.Save_Information;
+import cn.detector.util.UiUtil;
+
+/**
+ * @author Administrator
+
+ *
+ */
+
+public class WindowOperation extends JFrame implements TreeSelectionListener{
+	private static final long serialVersionUID = 1L;
+	private JFileChooser chooser;
+	//节点对象
+	DefaultMutableTreeNode root,chosen,child;
+	//默认的树模式
+	DefaultTreeModel model;
+	JTree tree;
+	//定义字符串容器，缓存图片所在文件夹目录的绝对路径
+	Vector<String> pathStringsVector = new Vector<String>();
+	//定义字符串容器，缓存叶子节点名称，即缓存图片文件名称
+	Vector<String> leafStringsVector = new Vector<String>();
+	//保存坐标按钮
+	private JButton saveButton;
+	//导入文件夹按钮
+	private JButton inPutFileButton;
+	//截图按钮
+	private JButton printScreenButton;
+	//切换为画线方式按钮,并需要暴露给外部的myLabel对象使用
+	public JButton changeToDrawLines;
+	//切换为画点方式按钮,并需要暴露给外部的myLabel对象使用
+	public JButton changeToDrawAnchor;
+	//切换为画点方式按钮,并需要暴露给外部的myLabel对象使用
+	public JButton changeToDrawPoints;
+	//需要暴露给外部的myLabel对象使用
+	public JButton inPutCoordinateButton;
+	//需要暴露给外部的myLabel对象使用
+	public JButton resetButton;
+	//需要暴露给外部的myLabel对象使用
+	public JButton resetAllButton;
+	//需要暴露给外部的myLabel对象使用,通过设置mystop，来切断上一次画点留下的联系
+	public JButton linkButton;
+	public JButton paintNextButton;
+	
+	
+	
+	private JPanel panel;
+	private JMenuBar menuBar;
+	private JMenu fileMenu,helpMenu,exitMenu;
+	private JMenuItem openItem;
+	private MyLabel myLabel;
+	//用于存储被封装成File对象的图片文件
+	File[] picFiles;
+	//图片文件的绝对路径
+	private String picAbsPath;
+	//图片文件所在目录的绝对路径
+	private String path_contains_pic;
+	//图片文件的名称
+	private String picName = null;
+	//保存坐标值的文本文件的绝对路径
+	public String txtPath = null;
+	//待创建文件的名称，该文件目录里存放的是储存坐标的文本文件
+	private String fileName = null;
+
+	//无参构造函数
+	WindowOperation(){}
+	//有参构造函数
+	WindowOperation(String title){
+		//设置窗体标题名称
+		setTitle(title);
+		//初始化窗体
+    	init();
+    	//设置窗体大小，大小为屏幕大小
+    	UiUtil.setFrameSize(this);
+    	//设置窗体图标
+    	UiUtil.setFrameImage(this);
+    	//设置窗口布局为边框布局
+    	setLayout(new BorderLayout());
+    	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	
+//    	Toolkit kit = Toolkit.getDefaultToolkit();
+//    	setVisible(true);
+    }
+	
+	/* （非 Javadoc）
+	 * @see javax.swing.event.TreeSelectionListener#valueChanged(javax.swing.event.TreeSelectionEvent)
+	 */
+	//实现鼠标切换树叶节点时，即切换图片时，进行图片加载和图片上绘制的坐标的保存
+	@Override
+	//实现valueChanged方法，将文件对象导入树节点
+	public void valueChanged(TreeSelectionEvent e){
+		//获取用户最后一次选择的节点
+		DefaultMutableTreeNode node=(DefaultMutableTreeNode)tree.getLastSelectedPathComponent();
+		//当点击节点的收起标记时，node会为空，在此容错,返回空
+		if(node == null){
+			return;
+		}
+		if(node.isLeaf()){
+		//如果linesVector容器非空，执行以下代码
+		if(!(myLabel.linesVector.isEmpty())){
+			
+			int n = JOptionPane.showConfirmDialog(myLabel, "人体关节标记未保存，是否现在保存？",
+					 "保存提醒", JOptionPane.YES_NO_CANCEL_OPTION);
+			if(n == JOptionPane.CANCEL_OPTION){
+				return;
+			}
+			else if(n == JOptionPane.NO_OPTION){
+				//读取下一张图片，但不保存坐标值
+				readNextPicture(e);	
+			}
+			else if(n == JOptionPane.YES_OPTION){
+				//创建保存保存坐标信息对象，传入图片所在文件夹路径path_contains_pic，图片名称picName和标签myLabel
+				Vector<MyPoint> pointsVector_Child = new Vector<MyPoint>(myLabel.pointsVector); // 创建pointsVector子关节点容器对象
+				Vector<Line> linesVector_Child = new Vector<Line>(myLabel.linesVector); // 定义linesVector子线框容器对象
+				myLabel.pointsVector_parent.add(pointsVector_Child); // 将子关节点容器对象加入父关节点容器中
+				myLabel.linesVector_parent.add(linesVector_Child); // 将子线框容器对象加入父线框容器中
+				
+				Save_Information save_Information = new Save_Information(path_contains_pic,txtPath,fileName,myLabel);
+				save_Information.save(); // 调用保存方法，保存坐标值
+				//清空上次画线留下的痕迹
+				//清空父容器
+				myLabel.pointsVector_parent.clear();
+				myLabel.linesVector_parent.clear();
+				myLabel.reset();//设置重置参数，清空缓存
+				readNextPicture(e);	// 读取下一张图片，并保存坐标值
+			}
+			//否则，不再次保存坐标
+			else{
+				
+				readNextPicture(e);	//读取下一张图片，并保存坐标值
+				return;
+			}
+		}
+			
+		//如果是第一次点击叶节点，linesVector为空值，则直接读取图片而不提醒保存坐标
+		else{
+			readNextPicture(e); //读取下一张图片，并保存坐标值
+		}
+	}	
+}
+	/**
+	 * @param e
+	 */
+	//加载下一张图片到label上
+	public void readNextPicture(TreeSelectionEvent e) {
+		//将父容器清空
+		myLabel.pointsVector_parent.clear();
+		myLabel.linesVector_parent.clear();
+		myLabel.reset();//设置重置参数，清空缓存
+		myLabel.repaint();
+		if(e.getSource() == tree)
+		{	//获取用户最后一次选择的节点
+			DefaultMutableTreeNode node=(DefaultMutableTreeNode)tree.getLastSelectedPathComponent();
+			//如果该节点是非叶子节点或者node节点为空，直接返回空
+			if(node == null || !(node.isLeaf())){
+				return;
+			}
+			//如果是叶节点，便执行以下代码将图片加载到myLabel上
+			else{
+				//循环容器，这里不需要对i局部变量进行++操作，容器会自动循环搜索数据
+				for(int i=0; i<leafStringsVector.size();i++){
+				//获取所选目录文件的名称
+				String tmp = (String) leafStringsVector.elementAt(i);
+				//如果叶节点的父节点名称与leafStringsVector容器里对应下标的文件夹目录名称相同
+				if(tmp.equals(node.getParent().toString())){
+					//获取pathStringsVector容器里面与leafStringsVector容器对应下标相同的字符串，即文件夹目录绝对路径
+					path_contains_pic = (String) pathStringsVector.elementAt(i);
+					//将所选节点的名字传给picName
+					picName = node.toString();
+					//构建并获取图片的绝对路径
+					picAbsPath = new String(path_contains_pic+File.separator+node.toString());
+					//创建图片对象
+					ImageIcon imageIcon = new ImageIcon(picAbsPath);
+					//获取myLabel控件的宽和高
+					int width = myLabel.getWidth();
+					int height = myLabel.getHeight();
+					
+					
+					//设置imageIcon对象的尺寸与myLabel控件的尺寸相同
+					imageIcon.setImage(imageIcon.getImage().getScaledInstance(width,height,Image.SCALE_SMOOTH));
+					//设置myLabel控件的背景图片，即加载图片，准备关节注解
+					myLabel.setIcon(imageIcon);
+					
+					//预保存信息语句块
+					{
+						//获取待创建文件的名称，名称与该图片名称相同,并去除图片名称picName的后缀名
+						if(picName.endsWith(".png")){
+							fileName = picName.replaceAll(".png", "");
+						}
+						else if(picName.endsWith(".jpg")){
+							fileName = picName.replaceAll(".jpg", "");
+						}
+						else if(picName.endsWith(".bmp")){
+							fileName = picName.replaceAll(".bmp", "");
+						}
+						else if(picName.endsWith(".gif")){
+							fileName = picName.replaceAll(".gif", "");
+						}
+						else if(picName.endsWith(".jpeg")){
+							fileName = picName.replaceAll(".jpeg", "");
+						}
+						//防止图片文件的后缀名不是以上的任意一种导致，fileName无值造成创建txtPath字符串对象不准确
+						//直接连后缀名一起赋给fileName
+						else{
+							fileName = picName;
+						}
+						
+						//获取待创建的文本文件名称
+						String txtName = new String(fileName + ".txt");
+						//获取待写入的文本文件的绝对地址
+						txtPath = new String(path_contains_pic + File.separator + fileName +File.separator + txtName);
+					
+						}
+				
+		
+					//找到图片文件，加载后，便退出循环，提高效率
+					break;
+					}
+				}	
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	private void init() {
+		//创建myLabel控件，并添加到窗体的中心位置
+		myLabel = new MyLabel();
+		
+//		myLabel.setPreferredSize(new Dimension(1048,628));
+		//将myLabel标签组件加入窗体
+		add(myLabel,BorderLayout.CENTER);
+		
+		//创建连线按钮
+		linkButton =new JButton("  连线   ");
+		//添加事件监听事件
+		linkButton.addActionListener(myLabel);
+		//创建保存坐标按钮
+		saveButton = new JButton("保存坐标");
+		//为保存按钮添加监听事件
+		saveButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//防止用户乱操作按钮，如并未打开图片就进行相关的按钮操作
+				if(fileName == null || txtPath == null){
+					JOptionPane.showMessageDialog(null, "还未打开图片，无法保存相应的图片信息", "错误信息", JOptionPane.ERROR_MESSAGE);
+					myLabel.reset(); // 设置重置参数，清空缓存
+					myLabel.repaint(); //重绘界面
+					return;
+				}
+				//创建保存保存坐标信息对象，传入图片所在文件夹路径path_contains_pic，文本文件所在的绝对路径：txtPath 和 标签myLabel
+				Save_Information save_Information = new Save_Information(path_contains_pic,txtPath,fileName,myLabel);
+				save_Information.save(); // 调用保存方法，保存坐标值
+			}
+		});
+		
+		//创建导入文件夹按钮
+		inPutFileButton = new JButton("导入文件夹");
+		//创建重置坐标按钮
+		resetButton = new JButton("重置当前坐标");
+		resetAllButton = new JButton("重置全部坐标");
+		//为按钮添加事件监听事件，监视器为实现了ActionListener接口的MyLabel类生成的对象
+		resetButton.addActionListener(myLabel);
+		resetAllButton.addActionListener(myLabel);
+		
+		//创建截图按钮
+		printScreenButton = new JButton("截图");
+		//为截图按钮添加监听器
+		printScreenButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//创建截图窗体，进行截图操作
+				if(txtPath != null){
+				new AWTCutPicture().setMypic(txtPath);
+				}
+				else{
+					JOptionPane.showMessageDialog(null, "文件尚未保存或用户未打开图片，无法找到画面截图", "错误信息", JOptionPane.ERROR_MESSAGE);
+				}
+				
+			}
+		});
+		
+		//创建导入关节按钮
+		inPutCoordinateButton = new JButton("导入关节");
+		//为导入关节按钮即inPutCoordinateButton添加监听事件，
+		//并将myLabel监视器监视此按钮，触动此菜单项会调用myLabel监视器，而导入坐标，并重新绘制线条到图片上 
+		inPutCoordinateButton.addActionListener(myLabel);	
+		changeToDrawLines = new JButton("画轮廓线");	
+		changeToDrawLines.addActionListener(myLabel);	
+		changeToDrawAnchor = new JButton("画锚点");	
+		changeToDrawAnchor.addActionListener(myLabel);	
+		changeToDrawPoints = new JButton("画关节点");	
+		changeToDrawPoints.addActionListener(myLabel);
+		paintNextButton = new JButton("绘制下一个并保存当前");	
+		paintNextButton.addActionListener(myLabel);
+		
+		panel = new JPanel(); // 创建panel面板，放置按钮
+		panel.setLayout(new FlowLayout());
+		//将按钮添加到面板中
+		panel.add(inPutFileButton);
+		panel.add(inPutCoordinateButton);
+		panel.add(saveButton);
+		panel.add(printScreenButton);
+		panel.add(resetButton);
+		panel.add(resetAllButton);
+		panel.add(changeToDrawLines);
+		panel.add(changeToDrawAnchor);
+		panel.add(changeToDrawPoints);
+		panel.add(linkButton);
+		panel.add(paintNextButton);
+		add(panel,BorderLayout.NORTH); // 将panel添加到窗体上，居中添加
+		
+		menuBar =new JMenuBar(); //设置菜单条
+		fileMenu =new JMenu("注解（E）");
+		//初始化root节点
+		 root = new DefaultMutableTreeNode("图片");
+		//将根节点加入树组件中
+		 tree = new JTree(root);
+		//为树组件的节点添加addTreeSelectionListener监视器
+ 		tree.addTreeSelectionListener(this);
+		//设置树组件的参考大小
+		tree.setPreferredSize(new Dimension(250,4000));
+		//设置树组件的布局，并添加滑轮
+		add(new JScrollPane(tree),BorderLayout.WEST);
+		// 获得数据对象DefaultTreeModel
+		model = (DefaultTreeModel) tree.getModel();
+		
+		
+		//为按钮添加监视器
+		inPutFileButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//定义文件对象
+				 File fileDir = null;
+				chooser = new JFileChooser();
+				//设置文件选择模式为既可以选择目录文件，也可以选择文件
+				chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+				//设置默认打开路径
+        		chooser.setCurrentDirectory(new File("D:\\我的资源\\cocosPNG"));
+        		//显示文件选择对话框
+        		int result = chooser.showOpenDialog(null);
+        		//如果选中文件夹并确定
+        		 if(result == JFileChooser.APPROVE_OPTION){
+        			 
+        			 //获取用户选择的文件夹的绝对路径
+        			 //如果用户选择的是文件目录，则调用getSelectedFile函数，获取所选文件目录的绝对路径，并封装成文件对象返回
+        			 if(chooser.getCurrentDirectory().isDirectory())
+        				 //此处获得的路径是形如：e:\\abc\\ab\\c形式的绝对路径
+        				 fileDir = chooser.getSelectedFile();
+        			 //如果用户选择的是文件，则调用getCurrentDirectory函数，获取所选文件所在目录的绝对路径，并封装成文件对象返回
+        			 if(chooser.getCurrentDirectory().isFile())
+        				//此处获得的路径是形如：e:\\abc\\ab\\c形式的绝对路径
+        				 fileDir = chooser.getCurrentDirectory();
+                     
+                     //将当前文件夹目录的绝对路径存储下来，为将来的图片读取创造条件
+        			 String picPathStrings = new String(fileDir.getAbsolutePath());//与TreeSelectionListener监视器配合读取图片或文件，因为完整路径易于读取
+                     //将文件夹目录的绝对路径加入到pathStringsVector容器中
+                     pathStringsVector.add(picPathStrings);
+                     
+                     //获取文件夹目录的绝对路径中所有文件夹目录的名称
+                     String[] filename = picPathStrings.split("\\\\");
+                     //以所选文件所在目录的名称或者所选文件夹目录的名称创建字符串对象
+                     String leafStrings = new String(filename[filename.length-1]);
+                     //将所选文件所在文件夹目录的名称或者所选文件夹目录的名称加入leafStringsVector容器中
+                     leafStringsVector.add(leafStrings);
+                     
+                     //创建子节点：以leafStrings为字节点名称
+                     child = new DefaultMutableTreeNode(leafStrings);
+                     
+                     //创建文件过滤器，只显示图片格式文件
+                     FileAcceptFilter fileAcceptFilter = new FileAcceptFilter();
+                     //额外添加图片格式
+                     fileAcceptFilter.setExtendName("java");
+              
+                     //将每个图片文件封装成File对象
+                     picFiles = fileDir.listFiles(fileAcceptFilter);
+            
+                     //定义节点数组，用于存储节点
+                     DefaultMutableTreeNode treeNode[];
+                     
+                     //创建节点数组以便在for循环中以此根据图片名创建节点
+                     treeNode = new DefaultMutableTreeNode[picFiles.length]; 
+                   
+                     //循环文件数组，添加树节点
+             		for(int i=0;i<picFiles.length;i++)
+             		{
+             			//创建并获取文件或图片文件叶节点
+             			treeNode[i]=new DefaultMutableTreeNode(picFiles[i].getName());//picFiles[i].getName()获取的是文件的的全名
+             			//添加文件或图片文件叶节点到子节点
+             			child.add(treeNode[i]);
+             		}
+             		//获取当前用户选择的节点，目的是选择child的父节点
+             		chosen = (DefaultMutableTreeNode)tree.getLastSelectedPathComponent();
+             		if (chosen == null){
+             			//如果当前用户未选择节点，则选择root根节点作为父节点
+             			chosen = root;
+             		}
+             		// 把child子节点添加到chosen父节点
+             		model.insertNodeInto(child, chosen, 0);
+          	 }
+		}
+	});
+        
+		helpMenu =new JMenu("帮助（H）");
+		exitMenu =new JMenu("退出（F）");
+		openItem = new JMenuItem("打开图片");
+		//为打开图片文件菜单项添加事件监听事件
+		openItem.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent arg) {
+                // TODO Auto-generated method stub
+            	chooser = new JFileChooser();
+            	//设置默认打开路径为当前工程路径
+        		chooser.setCurrentDirectory(new File("."));
+        		int result = chooser.showOpenDialog(null);
+                if(result == JFileChooser.APPROVE_OPTION){
+                	//获取所选图片路径
+                    String name = chooser.getSelectedFile().getPath();
+                    myLabel.setIcon(new ImageIcon(name));
+                }
+            }
+        });
+		
+//		//菜单添加菜单项
+//		fileMenu.add(openItem);
+//		//将菜单添加到菜单条中
+//		menuBar.add(fileMenu);
+//		menuBar.add(helpMenu);
+//		menuBar.add(exitMenu);
+//		setJMenuBar(menuBar);
+		//使生效
+		validate();
+		pack();
+	}
+}

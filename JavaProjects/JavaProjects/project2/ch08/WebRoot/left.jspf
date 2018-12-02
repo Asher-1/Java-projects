@@ -1,0 +1,45 @@
+<%@ page language="java" import="java.util.*" pageEncoding="GB2312" contentType="text/html;charset=gb2312"%>
+
+<tr>
+				   <td><a href="servlet/goodAdmin?action=7" target="_top" ><img name="layout_r7_c1" src="images/0.jpg" width="203" height="25" border="0" alt=""></a></td>
+				  </tr>
+				  <tr>
+				   <td><a href="servlet/categoryAdmin?action=3" target="_top" ><img name="layout_r9_c1" src="images/1.jpg" width="203" height="25" border="0" alt=""></a></td>
+				  </tr>
+				  <tr>
+				   <td><a href="servlet/messageAdmin?action=2" target="_top" ><img name="layout_r11_c1" src="images/2.jpg" width="203" height="25" border="0" alt=""></a></td>
+				  </tr>
+				  <tr>
+				   <td><a href="login.jsp" target="_top" ><img name="layout_r13_c1" src="images/3.jpg" width="203" height="25" border="0" alt=""></a></td>
+				  </tr>
+				  <tr>
+				   <td><a href="register.jsp" target="_top" ><img name="layout_r13_c1" src="images/4.jpg" width="203" height="25" border="0" alt=""></a></td>
+				  </tr>
+				  <%
+				     if(session.getAttribute("user")!=null)
+					 {
+				  %>
+				  <tr>
+				   <td><a href="modifyUserInfo.jsp" target="_top" ><img name="layout_r13_c1" src="images/6.jpg" width="203" height="25" border="0" alt=""></a></td>
+				  </tr>
+				  <tr>
+				   <td><a href="modifyPassword.jsp" target="_top" ><img name="layout_r13_c1" src="images/7.jpg" width="203" height="25" border="0" alt=""></a></td>
+				  </tr>
+				  <tr>
+				   <td><a href="servlet/logout" target="_top" ><img name="layout_r13_c1" src="images/5.jpg" width="203" height="25" border="0" alt=""></a></td>
+				  </tr>
+				  <%}%>
+</table></td>
+			   <td><img name="layout_r6_c4" src="images/layout_r6_c4.jpg" width="9" height="129" border="0" alt=""></td>
+			  </tr>
+			</table></td>
+		  </tr>
+		  <tr>
+		   <td><img name="layout_r15_c1" src="images/layout_r15_c1.jpg" width="212" height="62" border="0" alt=""></td>
+		  </tr>
+		  <tr>
+		   <td><img name="layout_r16_c1" src="images/layout_r16_c1.jpg" width="212" height="19" border="0" alt=""></td>
+		  </tr>
+		</table>
+       </td>
+	      <td width="100%" valign="top">

@@ -1,0 +1,86 @@
+<%@ page language="java" import="java.util.*" pageEncoding="GB2312" contentType="text/html;charset=gb2312"%>
+<%@ page import="beans.*,utils.*"%>
+<html>
+  <head>
+    <base href="<%=basePath%>">
+    
+    <title>校园易趣</title>
+    
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="This is my page">
+    
+    
+    <link rel="stylesheet" type="text/css" href="style.css">
+   
+  </head>
+<body bgcolor="#ffcc66" leftmargin="0" topmargin="0">
+<table border="0" cellpadding="0" cellspacing="0" width="100%"><!--DWLayoutTable--><tr>
+   <td width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%"><!--DWLayoutTable-->
+	  <tr>
+	   <td><table border="0" cellpadding="0" cellspacing="0" width="690">
+		  <tr>
+		   <td><table border="0" cellpadding="0" cellspacing="0" width="690">
+			  <tr>
+			   <td><table border="0" cellpadding="0" cellspacing="0" width="442">
+				  <tr>
+				   <td><img name="layout_r1_c1" src="images/layout_r1_c1.jpg" width="442" height="147" border="0" alt=""></td>
+				  </tr>
+				  <tr>
+				   <td><img name="layout_r2_c1" src="images/layout_r2_c1.jpg" width="442" height="8" border="0" alt=""></td>
+				  </tr>
+				</table>
+				</td>
+			   <td><img name="layout_r1_c6" src="images/layout_r1_c6.jpg" width="248" height="155" border="0" alt=""></td>
+			  </tr>
+			</table>
+			</td>
+		  </tr>
+		  <tr>
+		   <td><table border="0" cellpadding="0" cellspacing="0" width="690">
+			  <tr>
+			   <td><img name="layout_r3_c1" src="images/layout_r3_c1.jpg" width="24" height="23" border="0" alt=""></td>
+			        <td width="100%" background="images/layout_r3_c3.jpg">
+			          <%
+			          	UserBean userbean = (UserBean)session.getAttribute("user");
+			          	if(userbean!=null){
+			          		out.print("欢迎您：" + userbean.getUserRealName()+"  ");
+			          		out.print("现在是：" + DatetimeUtils.getDateTime());
+			          		out.print("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <b><font color='blue'><a href='servlet/myebay?action=0'>我的ebay</a></font></b>");
+			          		out.print("&nbsp;&nbsp; <b><font color='blue'><a href='servlet/mymsg?action=0'>我的留言</a></font></b>");
+			          	}
+			          %>
+					</td>
+			  </tr>
+			</table></td>
+		  </tr>
+		  <tr>
+		   <td><table border="0" cellpadding="0" cellspacing="0" width="690">
+			  <tr>
+			   <td><img name="layout_r4_c1" src="images/layout_r4_c1.jpg" width="442" height="15" border="0" alt=""></td>
+			   <td><img name="layout_r4_c6" src="images/layout_r4_c6.jpg" width="248" height="15" border="0" alt=""></td>
+			  </tr>
+			</table></td>
+		  </tr>
+		</table></td>
+	   <td width="100%" background="images/layout_r1_c7.jpg"><img name="layout_r1_c7" src="images/layout_r1_c7.jpg" width="70" height="193" border="0" alt=""></td>
+	  </tr>
+	</table>
+	</td>
+  </tr>
+  <tr>
+   <td><table border="0" cellpadding="0" cellspacing="0" width="100%"><!--DWLayoutTable-->
+	  <tr>
+	   <td valign="top" background="images/layout_r16_c1.jpg"><table border="0" cellpadding="0" cellspacing="0" width="212">
+		  <tr>
+		   <td><img name="layout_r5_c1" src="images/layout_r6_c1.jpg" width="212" height="22" border="0" alt=""></td>
+		  </tr>
+		  <tr>
+		   <td><table border="0" cellpadding="0" cellspacing="0" width="212">
+			  <tr>
+			   <td><table border="0" cellpadding="0" cellspacing="0" width="203">
+				  <tr>
+				   <td></td>
+				  </tr>

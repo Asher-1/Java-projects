@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PackageAnalysis>
+    <Package name="cn.detector.view" x="229" y="252">
+        <DependencyLink destination="cn.detector.util"/>
+        <DependencyLink destination="cn.detector.core"/>
+    </Package>
+    <Package name="cn.detector.util" x="571" y="104"/>
+    <Package name="cn.detector.resource" x="479" y="256"/>
+    <Package name="cn.detector.core" x="494" y="443">
+        <DependencyLink destination="cn.detector.view"/>
+    </Package>
+</PackageAnalysis>

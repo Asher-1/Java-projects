@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="ExternalProjectImportWizard">
+		<item value="false" key="WizardProjectsImportPage.STORE_NESTED_PROJECTS"/>
+		<item value="true" key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
+		<item value="false" key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED"/>
+		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
+			<item value="G:\工作文件库\大四下学期\毕设\论文写作\毕业论文模板\Java项目开发与毕业设计指导\project1\ch02"/>
+			<item value="G:\工作文件库\大四下学期\毕设\论文写作\毕业论文模板\Java项目开发与毕业设计指导\project3"/>
+			<item value="G:\工作文件库\大四下学期\毕设\论文写作\毕业论文模板\Java项目开发与毕业设计指导\project2"/>
+			<item value="G:\工作文件库\大四下学期\毕设\论文写作\毕业论文模板\Java项目开发与毕业设计指导\project1"/>
+			<item value="G:\工作文件库\大四下学期\毕设\论文写作\毕业论文模板\Java项目开发与毕业设计指导\project1\ch04"/>
+			<item value="G:\工作文件库\大四下学期\毕设\论文写作\毕业论文模板\Java项目开发与毕业设计指导\project1\ch03"/>
+			<item value="G:\工作文件库\大四下学期\毕设\论文写作\毕业论文模板\Java项目开发与毕业设计指导\project1\ch01"/>
+			<item value="G:\工作文件库\大四下学期\毕设\论文写作\毕业论文模板\Java项目开发与毕业设计指导"/>
+			<item value="C:\Users\A\Desktop\JavaCNN-master"/>
+			<item value="E:\eclipse\workspace\AnalyzeSkeleton"/>
+			<item value="C:\Users\Administrator\Desktop\AnalyzeSkeleton"/>
+		</list>
+		<list key="WizardProjectsImportPage.STORE_ARCHIVES">
+			<item value=""/>
+		</list>
+	</section>
+	<section name="ResourceNavigator">
+		<item value="Aggregate for window 1445754539833" key="ResourceWorkingSetFilter.STORE_WORKING_SET"/>
+		<item value="1" key="ResourceViewer.STORE_SORT_TYPE"/>
+	</section>
+	<section name="NewWizardAction">
+		<item value="org.eclipse.jdt.ui.wizards.JavaProjectWizard" key="NewWizardSelectionPage.STORE_SELECTED_ID"/>
+		<list key="NewWizardSelectionPage.STORE_EXPANDED_CATEGORIES_ID">
+		</list>
+	</section>
+</section>

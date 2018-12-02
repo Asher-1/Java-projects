@@ -1,0 +1,62 @@
+<%@ page language="java" import="java.util.*" pageEncoding="GB2312" contentType="text/html;charset=gb2312"%>
+<%
+if(session.getAttribute("admin")==null)
+	response.sendRedirect("../error.jsp?msg=you can't access this page");
+request.setCharacterEncoding("gb2312");
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+
+%>
+<html>
+  <head>
+    <base href="<%=basePath%>">
+    
+    <title>后台管理</title>
+    
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="This is my page">
+    
+  <LINK rel="stylesheet" href="style.css" type="text/css"></LINK>
+
+  </head>
+  
+  <body>
+  
+   <table width="60%" align="center" border="1" bordercolor="green">
+  <tr>
+    <td colspan="2" align="center"><img src="images/banner.jpg"/></td>
+  </tr>
+  <tr>
+    <td width="10%" valign="top">
+    <table border="1" bordercolor="gray">
+      <tr>
+        <td><div align="center"><a href="servlet/categoryAdmin?action=0">种类管理</a></div></td>
+      </tr>
+      <tr>
+        <td><div align="center"><a href="servlet/goodAdmin?action=0">物品管理</a></div></td>
+      </tr>
+      <tr>
+        <td><div align="center">图片管理</div></td>
+      </tr>
+      <tr>
+        <td><div align="center"><a href="servlet/userAdmin?action=0">用户管理</a></div></td>
+      </tr>
+      <tr>
+        <td><div align="center"><a href="servlet/messageAdmin?action=0">留言管理</a></div></td>
+      </tr>
+      <tr>
+        <td><div align="center"><a href="servlet/sysAdmin?action=0">系统设置</a></div></td>
+      </tr>
+      <tr>
+        <td><div align="center"><a href="admin/changePass.jsp">修改密码</a></div></td>
+      </tr>
+      <tr>
+        <td><div align="center"><a href="servlet/logout">注销</a></div></td>
+      </tr>
+    </table>      
+    <br>
+    </td>
+    <td >

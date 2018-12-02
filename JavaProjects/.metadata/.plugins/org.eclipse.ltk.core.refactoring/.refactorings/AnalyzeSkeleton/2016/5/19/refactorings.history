@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Extract method &apos;private boolean is_PropIntersectPoint()&apos; from &apos;cn.detector.core.Coordinate_Transformation.setOrder()&apos; to &apos;cn.detector.core.Coordinate_Transformation&apos;&#x0D;&#x0A;- Original project: &apos;AnalyzeSkeleton&apos;&#x0D;&#x0A;- Method name: &apos;is_PropIntersectPoint&apos;&#x0D;&#x0A;- Destination type: &apos;cn.detector.core.Coordinate_Transformation&apos;&#x0D;&#x0A;- Declared visibility: &apos;private&apos;" comments="false" description="Extract method &apos;is_PropIntersectPoint&apos;" destination="0" exceptions="false" flags="786434" id="org.eclipse.jdt.ui.extract.method" input="/src&lt;cn.detector.core{Coordinate_Transformation.java" name="is_PropIntersectPoint" replace="false" selection="29569 782" stamp="1462635512683" version="1.0" visibility="2"/>
+</session>

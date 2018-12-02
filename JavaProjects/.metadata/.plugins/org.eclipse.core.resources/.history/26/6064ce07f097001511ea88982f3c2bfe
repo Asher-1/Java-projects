@@ -1,0 +1,600 @@
+package cn.detector.util;
+
+import java.awt.Point;
+import java.util.Iterator;
+import java.util.ListIterator;
+import java.util.Vector;
+
+public class Coordinate_Transformation {
+	
+	Vector<MyPoint> v_Joint = new Vector<MyPoint>(); // 定义v_Joint用于缓存转换后的关节点对象
+	Vector<MyPoint> pointsVector;  // 定义pointsVector容器用于存储关节点
+	//创建五个用于缓存人体五个部分的关节点坐标，有左上（vector2），中部（vector1），右上（vector3），左下（vector4），右下（vector5）部位
+	Vector<MyPoint> vector1 = new Vector<MyPoint>();
+	Vector<MyPoint> vector2 = new Vector<MyPoint>();
+	Vector<MyPoint> vector3 = new Vector<MyPoint>();
+	Vector<MyPoint> vector4 = new Vector<MyPoint>();
+	Vector<MyPoint> vector5 = new Vector<MyPoint>();
+	//获取容器函数
+	public Vector<MyPoint> getVector1() {
+		return vector1;
+	}
+	public Vector<MyPoint> getVector2() {
+		return vector2;
+	}
+	public Vector<MyPoint> getVector3() {
+		return vector3;
+	}
+	public Vector<MyPoint> getVector4() {
+		return vector4;
+	}
+	public Vector<MyPoint> getVector5() {
+		return vector5;
+	}
+	//缓存边框的宽度和高度
+	private double heigh_Distance;
+	private double width_Distance;
+	//用于缓存原始坐标值
+	private int x1,y1;
+	private int x2,y2;
+	@SuppressWarnings("unused")
+	private int x3,y3;
+	private int x4,y4;
+	//用于缓存转换后的坐标值
+	private int Jx1,Jy1;
+	@SuppressWarnings("unused")
+	private int Jx2,Jy2;
+	@SuppressWarnings("unused")
+	private int Jx3,Jy3;
+	@SuppressWarnings("unused")
+	private int Jx4,Jy4;
+//	private MyPoint min_Temp;
+	
+	//有参构造函数
+	public Coordinate_Transformation(Vector<Line> lv,Vector<MyPoint>v) {
+		super();
+		//点容器的引用的传入
+		pointsVector = v;
+		//缓存边框四点的坐标值
+		this.x1 = lv.elementAt(0).x0;
+		this.y1 = lv.elementAt(0).y0;
+		this.x2 = lv.elementAt(1).x0;
+		this.y2 = lv.elementAt(1).y0;
+		this.x3 = lv.elementAt(2).x0;
+		this.y3 = lv.elementAt(2).y0;
+		this.x4 = lv.elementAt(3).x0;
+		this.y4 = lv.elementAt(3).y0;
+		//计算两点之间的距离
+    	heigh_Distance = PointToLine_Distance.lineSpace(x1,y1,x4,y4);
+		width_Distance = PointToLine_Distance.lineSpace(x1,y1,x2,y2);
+		
+		//转换坐标
+		Jx1 = x1;
+		Jy1 = y1;
+		Jx2 = x1 + (int)width_Distance;
+		Jy2 = y1;
+		Jx3 = x1 + (int)width_Distance;
+		Jy3 = y1 + (int)heigh_Distance;
+		Jx4 = x1;
+		Jy4 = y1 + (int)heigh_Distance;
+	}
+	//转换边框四点的坐标时斜坐标转换成正坐标
+	public void change_coordinate() {
+    	
+		//创建求点到直线距离的对象
+		PointToLine_Distance p_Line_Distance = new PointToLine_Distance();
+		//循环容器，这里不需要对i局部变量进行++操作，容器会自动循环搜索数据
+		for(int i=0; i<pointsVector.size();i++){
+			//获取容器中的元素
+			MyPoint tmp = (MyPoint) pointsVector.elementAt(i);
+			//设置原始点对象的标记值
+			tmp.link_Flag = i;
+			//创建新容器的MyPoint元素
+			MyPoint m = new MyPoint();
+			//设置新建点对象的标记值，并与对应的原始点对象的标记值相同，以便一一对应
+			m.link_Flag = i;
+			//创建点对象
+			m.point = new Point();
+			//转换节点坐标
+			m.point.x = Jx1 + (int)p_Line_Distance.getDistance(x1, y1, x4, y4, tmp.point.x, tmp.point.y);
+			m.point.y = Jy1 + (int)p_Line_Distance.getDistance(x1, y1, x2, y2, tmp.point.x, tmp.point.y);
+			//将转换后的节点新坐标加入关节点容器中
+			v_Joint.add(m);
+		}
+				
+    }
+    //对人体节点所在的位置进行分层，并将分层过的节点分别存入vector1，vector2，vector3，vector4，vector5容器中
+    public void divide_Layer(){
+    	//获取边框中点横坐标
+    	double middle = (Jx1 + Jx2)/2;
+    	//循环节点容器v_Joint
+    	for(int i=0; i<v_Joint.size();i++){
+    		MyPoint tmp = (MyPoint) v_Joint.elementAt(i);
+    		//1、获取属于中间层的点，放入vector1容器中
+    		if(tmp.point.x > middle - width_Distance/12 && tmp.point.x < middle + width_Distance/12){
+    				addPoints(tmp, vector1);
+    		}
+    		//2、获取左层的点，放入vector2容器中
+    		else if(tmp.point.x > Jx1 && tmp.point.x < middle - width_Distance/12){
+    			addPoints(tmp, vector2);
+    		}
+    		//3、获取右层的点，放入vector3容器中
+    		else if(tmp.point.x > middle + width_Distance/12 && tmp.point.x < Jx2){
+    			addPoints(tmp, vector3);
+    		}
+    	}
+    	/*
+    	 * 接下来，需要vector2和vector3容器进行分析出现的各种情况
+    	 * 有以下几种情况：
+    	 * 1、vector1的size为3
+    	 * 2、vector1的size不为3
+    	 * 
+    	 * */
+    	// 人体四肢越过身体对称轴
+    	if(vector1.size() != 3){
+    		//1、双手交叉放在腹前，但双掌接触，且双腿舒展放置，身体平躺 
+    		//2、身体平躺，双腿交叉，膝盖重叠，手臂舒展放置
+    		//3、身体平躺，脚重叠，膝盖左右突出，手臂舒展放置
+    		if(vector1.size() == 5 && vector2.size() == 4 && vector3.size() == 4){
+    			MyPoint[] anchor_Arr = analyze(); // 将三个锚点解析出来，vector1容器中只有除锚点以外的功能点对象
+    			setOrder(anchor_Arr); // 通过锚点与各关节点的相对位置，依次分离出来，从而方便地为各个功能点设置绘制顺序的变量order
+//    			//将vector1容器中多余的功能点对象移除，注意顺序不能颠倒 ,同时将vector1容器中多余的功能点依次加入到对应的vector2和vector3中
+//    			vector2.add(vector1.remove(4));
+//    			vector3.add(vector1.remove(3));
+    		}
+    		
+    		
+    		
+    		// 身体平躺，手臂舒展放置，同时双腿合拢
+    		else if(vector1.size() == 7 && vector2.size() == 3 && vector3.size() == 3){
+    			MyPoint[] anchor_Arr = analyze(); // 将三个锚点解析出来，vector1容器中只有除锚点以外的功能点对象
+    			setOrder(anchor_Arr); // 通过锚点与各关节点的相对位置，依次分离出来，从而方便地为各个功能点设置绘制顺序的变量order
+//    			MyPoint[] vector1_arr = preSort(vector1);
+//    			vector1.clear();
+//    			//将排序后的元素一次放入容器中
+//    			for (int i = 0; i < vector1_arr.length; i++) {
+//					vector1.add(vector1_arr[i]);
+//				}
+//    			//将vector1容器中多余的功能点对象移除，注意顺序不能颠倒 ,同时将vector1容器中多余的功能点依次加入到对应的vector2和vector3中
+//    			vector2.add(vector1.remove(6));
+//    			vector3.add(vector1.remove(5));
+//    			vector2.add(vector1.remove(4));
+//    			vector3.add(vector1.remove(3));
+	    	}
+    		//身体平躺 ，双手交叉放在腹前，但双掌接触，且双腿合拢
+    		else if(vector1.size() == 9 && vector2.size() == 2 && vector3.size() == 2){
+    			MyPoint[] anchor_Arr = analyze(); // 将三个锚点解析出来，vector1容器中只有除锚点以外的功能点对象
+    			setOrder(anchor_Arr); // 通过锚点与各关节点的相对位置，依次分离出来，从而方便地为各个功能点设置绘制顺序的变量order
+//    			MyPoint[] vector1_arr = preSort(vector1);
+//    			vector1.clear();
+//    			//将排序后的元素一次放入容器中
+//    			for (int i = 0; i < vector1_arr.length; i++) {
+//					vector1.add(vector1_arr[i]);
+//				}
+//    			//将vector1容器中多余的功能点对象移除，注意顺序不能颠倒 ,同时将vector1容器中多余的功能点依次加入到对应的vector2和vector3中
+//    			vector2.add(vector1.remove(8));
+//    			vector3.add(vector1.remove(7)); 
+//    			vector2.add(vector1.remove(6));
+//    			vector3.add(vector1.remove(5));
+//    			vector2.add(vector1.remove(4));
+//    			vector3.add(vector1.remove(3));
+    		}
+    		// 人体侧躺，身体摆成直线，但小脚岔开，即双脚分开
+    		else if(vector1.size() == 11 && vector2.size() == 1 && vector3.size() == 1){
+    			MyPoint[] anchor_Arr = analyze(); // 将三个锚点解析出来，vector1容器中只有除锚点以外的功能点对象
+    			setOrder(anchor_Arr); // 通过锚点与各关节点的相对位置，依次分离出来，从而方便地为各个功能点设置绘制顺序的变量order
+//    			MyPoint[] vector1_arr = preSort(vector1);
+//    			vector1.clear();
+//    			//将排序后的元素一次放入容器中
+//    			for (int i = 0; i < vector1_arr.length; i++) {
+//					vector1.add(vector1_arr[i]);
+//				}
+//    			//将vector1容器中多余的功能点对象移除，注意顺序不能颠倒 ,同时将vector1容器中多余的功能点依次加入到对应的vector2和vector3中
+//    			vector3.add(vector1.remove(10)); 
+//    			vector2.add(vector1.remove(9));
+//    			vector3.add(vector1.remove(8));
+//    			vector2.add(vector1.remove(7));
+//    			vector3.add(vector1.remove(5)); // 其中下标为6的属于人体的肾附近的节点，原本就属于vector1，故无需剔除
+//    			vector2.add(vector1.remove(4));
+//    			vector3.add(vector1.remove(3));
+//    			vector2.add(vector1.remove(2));
+    		}
+    		//人体侧躺，身体摆成直线
+    		else if(vector1.size() == 13 && vector2.size() == 0 && vector3.size() == 0){
+    			MyPoint[] anchor_Arr = analyze(); // 将三个锚点解析出来，vector1容器中只有除锚点以外的功能点对象
+    			setOrder(anchor_Arr); // 通过锚点与各关节点的相对位置，依次分离出来，从而方便地为各个功能点设置绘制顺序的变量order
+//    			MyPoint[] vector1_arr = preSort(vector1);
+//    			vector1.clear();
+//    			//将排序后的元素一次放入容器中
+//    			for (int i = 0; i < vector1_arr.length; i++) {
+//					vector1.add(vector1_arr[i]);
+//				}
+//    			//将vector1容器中多余的功能点对象移除，注意顺序不能颠倒 ,同时将vector1容器中多余的功能点依次加入到对应的vector2和vector3中
+//    			vector3.add(vector1.remove(12));
+//    			vector2.add(vector1.remove(11));
+//    			vector3.add(vector1.remove(10)); 
+//    			vector2.add(vector1.remove(9));
+//    			vector3.add(vector1.remove(8));
+//    			vector2.add(vector1.remove(7));
+//    			vector3.add(vector1.remove(5)); // 其中下标为6的属于人体的肾附近的节点，原本就属于vector1，故无需剔除
+//    			vector2.add(vector1.remove(4));
+//    			vector3.add(vector1.remove(3));
+//    			vector2.add(vector1.remove(2));
+    		}	
+    	}
+    	//人体正常平躺姿势，且人体四肢未越过身体对称轴
+    	else if(vector1.size() == 3){
+    		MyPoint[] anchor_Arr = analyze(); // 将三个锚点解析出来，使得vector1容器中只有除锚点以外的功能点对象
+			setOrder(anchor_Arr); // 通过锚点与各关节点的相对位置，依次分离出来，从而方便地为各个功能点设置绘制顺序的变量order
+    	}
+    }
+    /*对容器进行排序和分拣的代码块
+	 * 
+	 * 将点对象分类存放到不同的容器中
+	 * 
+	 * */
+	private void setOrder(MyPoint[] anchor_Arr) {
+		MyPoint head_Anchor = anchor_Arr[0];
+		MyPoint jaw_Anchor = anchor_Arr[1];
+		MyPoint belly_Anchor = anchor_Arr[2];
+		// 正常平躺的姿势
+		if(vector1.size() == 0){
+			separator(); // 将vector2和vector3容器进行分离，分离的部分点对象放入vector4和vector5中
+			
+			// 将锚点重新加入vector1容器
+			vector1.add(new MyPoint(head_Anchor));
+			vector1.add(new MyPoint(jaw_Anchor));
+			vector1.add(new MyPoint(belly_Anchor));
+			//左臂
+			MyPoint left_shoulder = line_min(vector2,jaw_Anchor); // 获取与jaw_Anchor节点最近的点并删除容器中的该点
+			left_shoulder.order = 1;
+			detail_Split(vector2,left_shoulder); // 区分elbow和wrist关节,并有序地加入容器参数中
+			vector2.elementAt(0).order = 2; // 设置关节次序 
+			vector2.elementAt(1).order = 3; // 设置关节次序
+			vector2.add(left_shoulder); // 加入shoulder节点
+			
+			// 右臂
+			MyPoint right_shoulder = line_min(vector3,jaw_Anchor); // 获取与jaw_Anchor节点最近的点并删除容器中的该点
+			right_shoulder.order = 1; // 设置关节次序
+			detail_Split(vector3,right_shoulder); // 区分elbow和wrist关节,并有序地加入容器参数中
+			vector3.elementAt(0).order = 2; // 设置关节次序 
+			vector3.elementAt(1).order = 3; // 设置关节次序
+			vector3.add(right_shoulder); // 加入shoulder节点
+
+			//左腿
+			detail_Split(vector4,belly_Anchor); // 区分knee和ankle关节,并有序地加入容器参数中
+			vector4.elementAt(0).order = 1; // 设置关节次序 
+			vector4.elementAt(1).order = 2; // 设置关节次序
+
+			// 右腿
+			detail_Split(vector5,belly_Anchor); // 区分knee和ankle关节，并有序地加入容器参数中
+			vector5.elementAt(0).order = 1; // 设置关节次序 
+			vector5.elementAt(1).order = 2; // 设置关节次序
+		}
+		//情况比较多些
+		else if(vector1.size() == 2){
+			// 手在肚子以上部位
+//			if(vector1.elementAt(0).point.y > belly_Anchor.point.y && vector1.elementAt(1).point.y > belly_Anchor.point.y){
+//				vector1.elementAt(0).order = 3;
+//				vector1.elementAt(1).order = 3;
+//				
+//			}
+			if(vector1.elementAt(0).point.y > jaw_Anchor.point.y && vector1.elementAt(0).point.y < head_Anchor.point.y){
+				vector1.elementAt(0).order = 3;
+				vector1.elementAt(1).order = 3;
+				
+			}
+			else if(vector1.elementAt(0).point.y > head_Anchor.point.y){
+				vector1.elementAt(0).order = 3;
+				vector1.elementAt(1).order = 3;
+				
+			}
+			
+			separator(); // 将vector2和vector3容器进行分离，分离的部分点对象放入vector4和vector5中
+			// 将锚点重新加入vector1容器
+			vector1.add(new MyPoint(head_Anchor));
+			vector1.add(new MyPoint(jaw_Anchor));
+			vector1.add(new MyPoint(belly_Anchor));
+			//左臂
+			MyPoint left_shoulder = line_min(vector2,jaw_Anchor); // 获取与jaw_Anchor节点最近的点并删除容器中的该点
+			left_shoulder.order = 1;
+			if(vector2.size() == 1){
+				vector2.elementAt(0).order = 2; // 设置关节次序
+				vector2.add(vector1.remove(0));
+				
+			}
+			else{
+				detail_Split(vector2,left_shoulder); // 区分elbow和wrist关节,并有序地加入容器参数中
+				vector2.elementAt(0).order = 2; // 设置关节次序 
+				vector2.elementAt(1).order = 3; // 设置关节次序
+			}
+			
+			vector2.add(left_shoulder); // 加入shoulder节点
+			
+			// 右臂
+			MyPoint right_shoulder = line_min(vector3,jaw_Anchor); // 获取与jaw_Anchor节点最近的点并删除容器中的该点
+			right_shoulder.order = 1; // 设置关节次序
+			if(vector3.size() == 1){
+				vector3.elementAt(0).order = 2; // 设置关节次序
+				vector3.add(vector1.remove(0));
+				
+			}
+			else if(vector3.size() == 2){
+				detail_Split(vector3,left_shoulder); // 区分elbow和wrist关节,并有序地加入容器参数中
+				vector3.elementAt(0).order = 2; // 设置关节次序 
+				vector3.elementAt(1).order = 3; // 设置关节次序
+			}
+			vector3.add(left_shoulder); // 加入shoulder节点
+			//左腿
+			detail_Split(vector4,belly_Anchor); // 区分knee和ankle关节,并有序地加入容器参数中
+			vector4.elementAt(0).order = 1; // 设置关节次序 
+			vector4.elementAt(1).order = 2; // 设置关节次序
+
+			// 右腿
+			detail_Split(vector5,belly_Anchor); // 区分knee和ankle关节，并有序地加入容器参数中
+			vector5.elementAt(0).order = 1; // 设置关节次序 
+			vector5.elementAt(1).order = 2; // 设置关节次序			
+		}
+		//
+		else if(vector1.size() == 4){
+			
+		}
+		//
+		else if(vector1.size() == 6){
+			
+		}
+		//
+		else if(vector1.size() == 8){
+			
+		}
+		//
+		else if(vector1.size() == 10){
+			
+		}
+		
+	}
+	
+	//将vector2和vector3容器进行分离，其中要用到基本的排序函数sort，分离的部分点对象放入vector4和vector5中
+	private void separator() {
+		//对点容器进行排序
+		MyPoint[] arr2 = sort(vector2);
+
+		//定义标记个数变量，并初始化为0
+		int count1 = 0;
+		for (int i = 0; i < arr2.length; i++) {
+			if(arr2.length == 4 ){
+				
+			}
+			else if(arr2.length == 5){
+				
+			}
+			if(count1 < 3){
+				arr2[i].order = i+1; // 设置连接次序
+				vector2.add(arr2[i]);
+				count1++;
+				continue;
+			}
+			
+//			arr2[i].order = i-2; // 设置连接次序
+			vector4.add(arr2[i]);
+		}
+		//对点容器进行排序，按y坐标排序
+		MyPoint[] arr3 = sort(vector3);
+		//定义标记个数变量
+		int count2 = 0;
+		for (int i = 0; i < arr3.length; i++) {
+			if(count2 < 3){
+				arr3[i].order = i+1; // 设置连接次序
+				vector3.add(arr3[i]);
+				count2++;
+				continue;
+			}
+			arr3[i].order = i-2; // 设置连接次序
+			vector5.add(arr3[i]);
+		}
+	}
+	private void detail_Split(Vector<MyPoint> v, MyPoint refer_Point) {
+		// 设置关节
+		MyPoint joint1;
+		MyPoint joint2;
+		double distance0 = PointToLine_Distance.lineSpace(v.elementAt(0),refer_Point);
+		double distance1 = PointToLine_Distance.lineSpace(v.elementAt(1),refer_Point);
+		if(distance0 > distance1){
+			joint1 = new MyPoint(v.elementAt(1));
+			joint2 = new MyPoint(v.elementAt(0));
+		}
+		else{
+			joint1 = new MyPoint(v.elementAt(0));
+			joint2 = new MyPoint(v.elementAt(1));
+		}
+		v.clear(); // 清空容器
+		// 关节点重新加入v容器
+		v.add(joint1);
+		v.add(joint2);
+	}
+	
+	
+	private MyPoint line_min(Vector<MyPoint> v, MyPoint jaw_Anchor) {
+		int flag =0; // 
+		MyPoint min_Temp = null; // 
+		for (Iterator<MyPoint> iterator = v.iterator(); iterator.hasNext();) {
+			MyPoint myPoint = (MyPoint) iterator.next();
+			if(flag == 0){
+				min_Temp = new MyPoint(myPoint);
+				flag =1;
+			}
+			double distance = PointToLine_Distance.lineSpace(myPoint.point.x,
+					myPoint.point.y,jaw_Anchor.point.x,jaw_Anchor.point.y);
+			double min_distance = PointToLine_Distance.lineSpace(min_Temp.point.x,
+					min_Temp.point.y,jaw_Anchor.point.x,jaw_Anchor.point.y);
+			if(distance < min_distance){
+				min_Temp = new MyPoint(myPoint);
+			}
+		}
+		// 从容器中删除距离最近的节点
+		for (ListIterator<MyPoint> listIterator = v.listIterator(); listIterator.hasNext();) {
+			MyPoint myPoint = (MyPoint) listIterator.next();
+			if(myPoint.point.x == min_Temp.point.x && myPoint.point.y == min_Temp.point.y){
+				listIterator.remove();
+			}
+		}
+		return min_Temp; // 返回距离最近的节点
+	}
+	private MyPoint[] analyze() {
+		MyPoint head_Anchor = null;
+		MyPoint jaw_Anchor = null;
+		MyPoint belly_Anchor = null;
+		MyPoint[] arr = new MyPoint[3];
+		MyPoint[] vector1_arr = preSort(vector1);
+		
+		vector1.clear();
+		int flag = 0;
+		int j = 0;
+		for (int i = 0; i < vector1_arr.length; i++) {
+			if(flag == 0){
+				if(vector1_arr[i].anchor){
+					head_Anchor = vector1_arr[i];
+					head_Anchor.order = 1;
+					arr[j++] = head_Anchor;
+					flag = 1;
+					continue; // 退出本次循环，不加入容器
+				}
+			}
+			else if(flag == 1){
+				if(vector1_arr[i].anchor){
+					jaw_Anchor = vector1_arr[i];
+					jaw_Anchor.order = 2;
+					arr[j++] = jaw_Anchor;
+					flag = 2;
+					continue; // 退出本次循环，不加入容器
+				}
+			}
+			else if(flag == 2){
+				if(vector1_arr[i].anchor){
+					belly_Anchor = vector1_arr[i];
+					belly_Anchor.order = 3;
+					arr[j++] = belly_Anchor;
+					flag = 3;
+					continue; // 退出本次循环，不加入容器
+				}
+			}
+			vector1.add(vector1_arr[i]); // 数组中的功能点对象加入容器1中
+		}
+		return arr;
+		
+	}
+    
+    //用于将该点对应的原始点对象加入到传入的容器中去
+	private void addPoints(MyPoint tmp,Vector<MyPoint>v){
+		//循环原始点容器
+		for(int k=0; k<pointsVector.size();k++){
+			MyPoint pt = (MyPoint) pointsVector.elementAt(k);
+			//判断转换坐标后的点对象是否是与原始点对象对应的点对象
+			if(tmp.link_Flag == pt.link_Flag){
+				MyPoint m = new MyPoint(pt); // 创建新容器的MyPoint元素
+				v.add(m); // 把点加入容器
+				break; // 找到后便退出循环
+			}
+		}
+	}
+	//排序函数，按照容器中元素的点坐标的y值的大小进行排序，最后传入的容器会被清空
+	private MyPoint[] preSort(Vector<MyPoint> v){
+		//创建一个缓存对象，用于排序时的值替换
+		MyPoint myPoint;
+		/*创建一个数组用于存放排好序的对象，因为人体的节点最多为13，所以大小默认为14，
+		* 防止下标越界，是为了接收各种大小的容器，但返回的是该容器的元素数
+		* 
+		* */
+		MyPoint[] arr = new MyPoint[14];
+		
+		int j=0; // 创建j变量，移动数组指针
+		for(int i=0; i<v.size();i++){
+			MyPoint tmp = (MyPoint) v.elementAt(i);
+			MyPoint mp = new MyPoint(tmp); // 调用MyPoint的有参构造函数
+			arr[j++] = mp; // 把点对象放入对象数组中
+		}
+		//冒泡排序法，按点对象的y坐标值从小到大一次排序
+		for (int pass = 1; pass < arr.length; pass++) {
+			for(int i =0; i<arr.length-pass; i++){
+				//判断数组所含元素是否结束，若结束，则仅把有元素的部分放入新创建的数组中并返回该数组引用
+				if(arr[i+1] == null){
+					//记录数组中所含实际元素的个数即容器中所含元素的个数
+					int w = i+1;
+					//以实际元素的个数重新创建一个数组
+					MyPoint[] aft_arr = new MyPoint[w];
+					for (int l = 0; l < w; l++) {
+						aft_arr[l] = arr[l];
+					}
+					//清空容器
+					v.clear();
+					//返回数组引用，且数组的长度与原容器所含元素个数相同的
+					return aft_arr;
+				}
+				// 根据功能点对象的y坐标值的大小，交换数组中相邻元素即功能点对象的位置
+				if(arr[i].point.y > arr[i+1].point.y){
+					myPoint = arr[i];
+					arr[i] = arr[i+1];
+					arr[i+1] = myPoint;
+				}		
+			}
+		}
+		return arr; // 返回数组
+	}
+	// 基本排序函数
+	private MyPoint[] sort(Vector<MyPoint> v){
+		//创建一个缓存对象，用于排序时的值替换
+		MyPoint myPoint;
+		MyPoint[] arr = null;
+		if(v.size() == 5){
+			arr = new MyPoint[5];
+		}
+		else if(v.size() == 4){
+			arr = new MyPoint[4];
+		}
+		else if(v.size() == 3){
+			arr = new MyPoint[3];
+		}
+		
+		//创建j变量，移动数组指针
+		int j=0;
+		for(int i=0; i<v.size();i++){
+			MyPoint tmp = (MyPoint) v.elementAt(i);
+			//调用MyPoint的有参构造函数
+			MyPoint mp = new MyPoint(tmp);
+//					mp.point = new Point();
+//					//将容器中的元素的坐标值赋给新建的点对象中
+//					mp.point.x = tmp.point.x;
+//					mp.point.y = tmp.point.y;
+			//把点对象放入对象数组中
+			arr[j++] = mp;
+		}
+		//冒泡排序法，按点对象的y坐标值从小到大一次排序
+		for (int pass = 1; pass < arr.length; pass++) {
+			for(int i =0; i<arr.length-pass; i++){
+				if(arr[i].point.y>arr[i+1].point.y){
+					myPoint = arr[i];
+					arr[i] = arr[i+1];
+					arr[i+1] = myPoint;
+				}
+			}
+		}
+		v.clear();
+		return arr;
+	}
+    
+//	double Angle = getAngle();
+//	public double getAngle() {
+//		double a = PointToLine_Distance.lineSpace(x3,y3,x2,y2);
+//		double b = PointToLine_Distance.lineSpace(x3,y3,x4,y4);
+//		double c = PointToLine_Distance.lineSpace(x2,y2,x4,y4);
+//		double cosine_Value = (double)(a*a + b*b -c*c )/(2*a*b); // 计算余弦值	
+//		double angle = Math.acos(cosine_Value); // 计算角度
+//		//坐标转换
+//		Jx1=(X1-Y1)Math.sin（angle);	
+//		Jy1=(X1+Y1)Math.sin（angle);
+//		Jx2=(X2+Y2)Math.sin（angle);
+//		Jy2=(Y2-X2)Math.sin（angle);
+//		return 0;
+//	}
+}
+    

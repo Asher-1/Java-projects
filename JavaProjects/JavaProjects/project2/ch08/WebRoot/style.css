@@ -1,0 +1,43 @@
+
+A:link
+{
+	text-decoration: none;
+	color: black;
+}
+
+A:visited
+{
+	text-decoration: none;
+	color: black;
+}
+
+A:active
+{
+	text-decoration: none;
+	color: black;
+}
+
+A:hover
+{
+	text-decoration: underline;
+	color: red;
+}
+body         {  font-family: Arial, Helvetica, sans-serif; font-size: 9pt}
+table        {  font-family: Arial; font-size: 9pt}
+td           {  font-family: Arial; font-size: 9pt}
+
+.NormalTextBox
+{
+	font-weight: normal;
+	font-size: 12px;
+	border-left-color: dimgray;
+	border-bottom-color: dimgray;
+	color: #000000;
+	border-top-style: solid;
+	border-top-color: dimgray;
+	font-family: Verdana, Helvetica, sans-serif;
+	border-right-style: solid;
+	border-left-style: solid;
+	border-right-color: dimgray;
+	border-bottom-style: solid;
+}

@@ -1,0 +1,7 @@
+1.安装sqlserver(＋sp3补丁)
+2.创建数据库ajax，使用sql目录下的ajaxbak文件还原数据库
+3.使用eclipse导入项目ajax
+4.在src/config.properties中配置数据库连接信息
+5.部署项目
+6.启动tomcat
+7.访问http://localhost:8080/ajax

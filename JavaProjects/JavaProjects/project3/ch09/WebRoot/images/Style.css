@@ -1,0 +1,78 @@
+body { text-align:center;font-family: "ËÎÌו"; font-size: 12pt;  margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px;background-color:#F3F6FB}
+.back_southidc{BACKGROUND-IMAGE:url('/SLS/images/titlebg.gif');COLOR:000000; font-weight:bold}
+th{BACKGROUND-IMAGE:url('/SLS/images/titlebg.gif');COLOR:000000; font-size:14px}
+td{BACKGROUND-COLOR: F2F8FF;font-size: 13px;}
+
+.top td a:link{
+color:#ffffff;
+font-size:12px;
+text-decoration:none;
+}
+.top td a:visited{
+color:#ffffff;
+font-size:12px;
+text-decoration:none;
+}
+
+.top td a:hover{
+color:#ffff00;
+font-size:12px;
+text-decoration:underline;
+}
+
+.top td{
+color:#ffffff;
+font-size:12px
+}
+input {  font-size: 10pt; color: #000000; background-color: #f7f7f7; padding-top: 3px}
+textarea {  font-size: 10pt; color: #000000; background-color: #f7f7f7; padding-top: 3px}
+A:link {font-size: 11pt;COLOR: navy; TEXT-DECORATION: none}
+A:visited {font-size: 11pt;COLOR: navy; TEXT-DECORATION: none}
+A:hover {font-size: 11pt;COLOR: red; TEXT-DECORATION: none}
+A:active {font-size: 11pt;COLOR: navy; TEXT-DECORATION: none}
+.menutable
+{
+	BORDER-LEFT-COLOR: #aaaaaa;
+	BORDER-BOTTOM-COLOR: #aaaaaa;
+	BORDER-TOP-STYLE: dashed;
+	BORDER-TOP-COLOR: #aaaaaa;
+	BORDER-RIGHT-STYLE: dashed; 
+	BORDER-LEFT-STYLE: dashed; 
+	BORDER-COLLAPSE: collapse; 
+	BORDER-RIGHT-COLOR: #aaaaaa;
+	BORDER-BOTTOM-STYLE: dashed
+}    
+.textbox85
+{
+	width:85%;
+	height:300px;
+}
+.text85
+{
+	width:85%
+}
+.text125
+{
+	width:125px
+}
+.selectcss
+{
+	border-width:1px;
+	border-style:inset;
+	border-color:#CCCCCC;
+	background-color:#FFFFFF;
+}
+
+itles
+{
+	BACKGROUND-COLOR: F2F8FF;
+	font-size: 16px;
+	BACKGROUND-IMAGE:url('/SLS/images/titlebg.gif');
+	COLOR:000000;
+	text-align:center;
+	font-weight:bold;
+}
+table
+{
+	width:90%;
+}

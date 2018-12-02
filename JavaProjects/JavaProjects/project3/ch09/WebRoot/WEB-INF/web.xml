@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.4" 
+	xmlns="http://java.sun.com/xml/ns/j2ee" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
+	http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+	<servlet>     
+     	<servlet-name>GetNode</servlet-name>
+        <servlet-class>servlet.GetNodeServlet</servlet-class>  
+    </servlet>
+  <servlet>
+    <servlet-name>Ajax1Servlet</servlet-name>
+    <servlet-class>servlet.Ajax1Servlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>Ajax2Servlet</servlet-name>
+    <servlet-class>servlet.Ajax2Servlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>Ajax3Servlet</servlet-name>
+    <servlet-class>servlet.Ajax3Servlet</servlet-class>
+  </servlet>
+
+
+     
+    <servlet-mapping>     
+        <servlet-name>GetNode</servlet-name>    
+        <url-pattern>/servlet/getnode</url-pattern>
+    </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Ajax1Servlet</servlet-name>
+    <url-pattern>/servlet/Ajax1Servlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Ajax2Servlet</servlet-name>
+    <url-pattern>/servlet/Ajax2Servlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Ajax3Servlet</servlet-name>
+    <url-pattern>/servlet/Ajax3Servlet</url-pattern>
+  </servlet-mapping>
+    	<jsp-config>
+		<taglib>
+			<taglib-uri>WEB-INF/c.tld</taglib-uri>
+			<taglib-location>c.tld</taglib-location>
+		</taglib>
+		<taglib>
+			<taglib-uri>/WEB-INF/el-function/functions.tld</taglib-uri>
+			<taglib-location>/WEB-INF/el-function/functions.tld</taglib-location>
+		</taglib>
+	</jsp-config>
+	<welcome-file-list>
+	<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>   
+</web-app>

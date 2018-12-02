@@ -1,0 +1,49 @@
+/**
+ * 
+ */
+package cn.detector.view;
+
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
+import cn.detector.util.MyLookAndFeel;
+
+/**
+ * @author Administrator
+ *
+ */
+public class Start {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+//		setSkin();
+		WindowOperation win = new WindowOperation("人体注解系统");
+		//將窗体对象传入panel容器中
+//		FramePanel.setFrame(win);
+		//设置窗体可见
+		win.setVisible(true);
+		
+
+	}
+
+	public static void setSkin() {
+		try {
+			UIManager.setLookAndFeel(MyLookAndFeel.JTATTOO_MINT);
+		} catch (ClassNotFoundException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		}
+	}
+
+}

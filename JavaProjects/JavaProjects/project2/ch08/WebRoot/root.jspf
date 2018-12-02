@@ -1,0 +1,43 @@
+<%@ page language="java" import="java.util.*" pageEncoding="GB2312" contentType="text/html;charset=gb2312"%>
+
+
+  </td>
+	  </tr>
+	</table></td>
+  </tr>
+  <tr>
+   <td><table border="0" cellpadding="0" cellspacing="0" width="100%"><!--DWLayoutTable-->
+	  <tr>
+	   <td><table border="0" cellpadding="0" cellspacing="0" width="690">
+		  <tr>
+		   <td><table border="0" cellpadding="0" cellspacing="0" width="690">
+			  <tr>
+			   <td><img name="layout_r17_c1" src="images/layout_r17_c1.jpg" width="212" height="16" border="0" alt=""></td>
+			   <td><img name="layout_r17_c5" src="images/layout_r17_c5.jpg" width="478" height="16" border="0" alt=""></td>
+			  </tr>
+			</table></td>
+		  </tr>
+		  <tr>
+		   <td><table border="0" cellpadding="0" cellspacing="0" width="690">
+			  <tr>
+			   <td><img name="layout_r18_c1" src="images/layout_r18_c1.jpg" width="16" height="59" border="0" alt=""></td>
+			   <td><table border="0" cellpadding="0" cellspacing="0" width="674">
+				  <tr>
+				            <td height="49" background="images/layout_r18_c2.jpg"><div align="right">Copyright 
+                              (C) 2006, 武汉大学计算机学院 <a href="mailto:lixiaoqing18@163.com">李晓清</a></div></td>
+				  </tr>
+				  <tr>
+				   <td><img name="layout_r19_c2" src="images/layout_r19_c2.jpg" width="674" height="10" border="0" alt=""></td>
+				  </tr>
+				</table></td>
+			  </tr>
+			</table></td>
+		  </tr>
+		</table></td>
+	   <td width="100%" background="images/layout_r17_c7.jpg"><img name="layout_r17_c7" src="images/layout_r17_c7.jpg" width="70" height="75" border="0" alt=""></td>
+	  </tr>
+	</table></td>
+  </tr>
+</table>
+</body>
+</html>

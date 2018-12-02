@@ -1,0 +1,27 @@
+/**
+ * 
+ */
+package cn.detector.util;
+
+import java.awt.Color;
+import java.awt.Point;
+
+/**
+ * @author Administrator
+ *
+ */
+
+public class MyPoint{
+//	//用于存储上一点的坐标
+//	public Point lastPoint = null;
+//	//用于存储当前第一个点的坐标
+//	public Point point1 = null;
+//	//用于存储当前第二个点的坐标
+//	public Point point2 = null;
+
+	public Point point =null;
+	public Color color;// Save the color
+	public Boolean bool = false;
+	public int cutFlag = 0;
+	public int layer;
+}

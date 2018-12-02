@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ClassDiagram>
+    <Class name="cn.detector.view.WindowOperation" x="1184" y="508">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Association destinationClassName="cn.detector.view.MyLabel"
+            endpointName="myLabel" kind="Simple"/>
+        <Association destinationClassName="cn.detector.util.IconNode"
+            endpointName="root" kind="Simple"/>
+        <Communication destinationClassName="cn.detector.util.UiUtil"/>
+        <Communication destinationClassName="cn.detector.util.Save_Information"/>
+        <Communication destinationClassName="cn.detector.view.MyLabel"/>
+        <Communication destinationClassName="cn.detector.util.IconNode"/>
+    </Class>
+    <Class name="cn.detector.util.FontChooser" x="938" y="353">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Association
+            destinationClassName="cn.detector.util.FontChooser.MyList"
+            endpointName="StyleList" kind="Simple"/>
+        <Association
+            destinationClassName="cn.detector.util.FontChooser.MyList"
+            endpointName="FontList" kind="Simple"/>
+        <Association
+            destinationClassName="cn.detector.util.FontChooser.MyList"
+            endpointName="SizeList" kind="Simple"/>
+        <Communication destinationClassName="cn.detector.util.FontChooser.MyList"/>
+    </Class>
+    <Class name="cn.detector.view.MyLabel.LineListener" x="1630" y="406">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+    </Class>
+    <Class name="cn.detector.core.Coordinate_Transformation" x="1088" y="-9">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Association destinationClassName="cn.detector.core.MyPoint"
+            endpointName="vector5" kind="Simple"/>
+        <Association destinationClassName="cn.detector.core.MyPoint"
+            endpointName="vector3" kind="Simple"/>
+        <Association destinationClassName="cn.detector.core.MyPoint"
+            endpointName="belly_Anchor" kind="Simple"/>
+        <Association destinationClassName="cn.detector.core.MyPoint"
+            endpointName="v_Joint" kind="Simple"/>
+        <Association destinationClassName="cn.detector.core.MyPoint"
+            endpointName="vector4" kind="Simple"/>
+        <Association destinationClassName="cn.detector.core.MyPoint"
+            endpointName="temp_Arr2" kind="Simple"/>
+        <Association destinationClassName="cn.detector.core.MyPoint"
+            endpointName="pointsVector" kind="Simple"/>
+        <Association destinationClassName="cn.detector.core.MyPoint"
+            endpointName="vector1" kind="Simple"/>
+        <Association destinationClassName="cn.detector.core.MyPoint"
+            endpointName="brow_Anchor" kind="Simple"/>
+        <Association destinationClassName="cn.detector.core.MyPoint"
+            endpointName="vector2" kind="Simple"/>
+        <Association destinationClassName="cn.detector.core.MyPoint"
+            endpointName="jaw_Anchor" kind="Simple"/>
+        <Communication destinationClassName="cn.detector.core.PointToLine_Distance"/>
+    </Class>
+    <Class name="cn.detector.core.MyLookAndFeel" x="966" y="867">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+    </Class>
+    <Class name="cn.detector.view.MyLabel" x="42" y="266">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Association destinationClassName="cn.detector.core.MyPoint"
+            endpointName="tmpPoint" kind="Simple"/>
+        <Association destinationClassName="cn.detector.core.Line"
+            endpointName="linesVector" kind="Simple"/>
+        <Association destinationClassName="cn.detector.core.Line"
+            endpointName="line" kind="Simple"/>
+        <Association destinationClassName="cn.detector.core.Mydraw"
+            endpointName="mydraw" kind="Simple"/>
+        <Association destinationClassName="cn.detector.core.MyPoint"
+            endpointName="myPoint" kind="Simple"/>
+        <Association destinationClassName="cn.detector.core.MyPoint"
+            endpointName="pointsVector" kind="Simple"/>
+        <Association
+            destinationClassName="cn.detector.view.WindowOperation"
+            endpointName="win" kind="Simple"/>
+        <Communication destinationClassName="cn.detector.view.WindowOperation"/>
+        <Communication destinationClassName="cn.detector.util.FontChooser"/>
+        <Communication destinationClassName="cn.detector.core.Mydraw"/>
+        <Communication destinationClassName="cn.detector.core.Coordinate_Transformation"/>
+        <Communication destinationClassName="cn.detector.util.Coordinate_Transformation"/>
+        <Communication destinationClassName="cn.detector.util.Mydraw"/>
+    </Class>
+    <Class name="cn.detector.util.FontChooser.MyList" x="548" y="337">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+    </Class>
+    <Class name="cn.detector.util.IconNode" x="1285" y="372">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+    </Class>
+    <Class name="cn.detector.view.Start" x="1747" y="835">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Association
+            destinationClassName="cn.detector.view.WindowOperation"
+            endpointName="win" kind="Simple"/>
+        <Communication destinationClassName="cn.detector.core.Mydraw"/>
+        <Communication destinationClassName="cn.detector.view.MyLabel"/>
+    </Class>
+    <Class name="cn.detector.core.Line" x="598" y="730">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+    </Class>
+    <Class name="cn.detector.util.AWTCutPicture" x="2115" y="543">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+    </Class>
+    <Class name="cn.detector.util.FileAcceptFilter" x="88" y="698">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+    </Class>
+    <Class name="cn.detector.core.Mydraw" x="132" y="1014">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Association destinationClassName="cn.detector.view.MyLabel"
+            endpointName="myLabel" kind="Simple"/>
+        <Association
+            destinationClassName="cn.detector.view.WindowOperation"
+            endpointName="win" kind="Simple"/>
+        <Communication destinationClassName="cn.detector.view.WindowOperation"/>
+        <Communication destinationClassName="cn.detector.view.MyLabel"/>
+    </Class>
+    <Class name="cn.detector.util.IconNodeRenderer" x="1279" y="325">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Communication destinationClassName="cn.detector.util.IconNode"/>
+    </Class>
+    <Class name="cn.detector.core.PointToLine_Distance" x="469" y="851">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+    </Class>
+    <Class name="cn.detector.util.UiUtil" x="821" y="717">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+    </Class>
+    <Class name="cn.detector.util.Coordinate_Transformation" x="80" y="155">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Association destinationClassName="cn.detector.util.MyPoint"
+            endpointName="vector5" kind="Simple"/>
+        <Association destinationClassName="cn.detector.util.MyPoint"
+            endpointName="vector3" kind="Simple"/>
+        <Association destinationClassName="cn.detector.util.MyPoint"
+            endpointName="v_Joint" kind="Simple"/>
+        <Association destinationClassName="cn.detector.util.MyPoint"
+            endpointName="vector4" kind="Simple"/>
+        <Association destinationClassName="cn.detector.util.MyPoint"
+            endpointName="temp_Arr2" kind="Simple"/>
+        <Association destinationClassName="cn.detector.util.MyPoint"
+            endpointName="pointsVector" kind="Simple"/>
+        <Association destinationClassName="cn.detector.util.MyPoint"
+            endpointName="vector1" kind="Simple"/>
+        <Association destinationClassName="cn.detector.util.MyPoint"
+            endpointName="vector2" kind="Simple"/>
+        <Communication destinationClassName="cn.detector.util.PointToLine_Distance"/>
+    </Class>
+    <Class name="cn.detector.util.NodeImageObserver" x="1586" y="266">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+    </Class>
+    <Class name="cn.detector.util.AWTCutPicture.MyTakePicture" x="1841" y="48">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Association
+            destinationClassName="cn.detector.util.AWTCutPicture"
+            endpointName="aWTpicture" kind="Simple"/>
+    </Class>
+    <Class name="cn.detector.util.AWTCutPicture.MyClearPicture" x="2222" y="47">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Association
+            destinationClassName="cn.detector.util.AWTCutPicture"
+            endpointName="aWTpicture" kind="Simple"/>
+    </Class>
+    <Class name="cn.detector.core.MyPoint" x="591" y="5">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+    </Class>
+</ClassDiagram>

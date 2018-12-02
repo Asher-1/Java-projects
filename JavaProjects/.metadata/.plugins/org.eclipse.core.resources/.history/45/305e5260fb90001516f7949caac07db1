@@ -1,0 +1,175 @@
+package cn.detector.util;
+
+import java.awt.Point;
+import java.util.Vector;
+
+public class Coordinate_Transformation {
+	//定义pointsVector容器用于存储关节点
+	Vector<MyPoint> v_Joint = new Vector<MyPoint>();
+//	Vector<MyPoint> v_Line = new Vector<MyPoint>();
+	Vector<MyPoint> pointsVector;
+	Vector<MyPoint> vector1;
+	Vector<MyPoint> vector2;
+	Vector<MyPoint> vector3;
+	Vector<MyPoint> vector4;
+	Vector<MyPoint> vector5;
+	//缓存边框的宽度
+	double heigh_Distance;
+	double width_Distance;
+	private int x1,y1;
+	private int x2,y2;
+	private int x3,y3;
+	private int x4,y4;
+	//转换后的坐标
+	private int Jx1,Jy1;
+	private int Jx2,Jy2;
+	private int Jx3,Jy3;
+	private int Jx4,Jy4;
+//	private Point p1,p2,p3,p4;
+	//有参构造函数
+    public Coordinate_Transformation(Point p1,Point p2,Point p3,Point p4,Vector<MyPoint>v) {
+		super();
+		//点容器的引用的传入
+		pointsVector = v;
+		//缓存边框四点的坐标值
+		this.x1 = p1.x;
+		this.y1 = p1.y;
+		this.x2 = p2.x;
+		this.y2 = p2.y;
+		this.x3 = p3.x;
+		this.y3 = p3.y;
+		this.x4 = p4.x;
+		this.y4 = p4.y;
+	}
+    public void change_coordinate() {
+    	//计算两点之间的距离
+    	heigh_Distance = PointToLine_Distance.lineSpace(x1,y1,x4,y4);
+		width_Distance = PointToLine_Distance.lineSpace(x1,y1,x2,y2);
+		
+		//转换坐标
+		Jx1 = x1;
+		Jy1 = y1;
+		Jx2 = x1 + (int)width_Distance;
+		Jy2 = y1;
+		Jx3 = x1 + (int)width_Distance;
+		Jy3 = y1 + (int)heigh_Distance;
+		Jx4 = x1;
+		Jy4 = y1 + (int)heigh_Distance;
+//		for (int i = 0; i < 4; i++) {
+//			MyPoint m = new MyPoint();
+//			m.point = new Point();
+//			
+//		}
+		//创建求点到直线距离的对象
+		PointToLine_Distance p_Line_Distance = new PointToLine_Distance();
+		//循环容器，这里不需要对i局部变量进行++操作，容器会自动循环搜索数据
+		for(int i=0; i<pointsVector.size();i++){
+			//获取容器中的元素
+			MyPoint tmp = (MyPoint) pointsVector.elementAt(i);
+			tmp.cutFlag = i;
+			//创建新容器的MyPoint元素
+			MyPoint m = new MyPoint();
+			m.cutFlag = i;
+			m.point = new Point();
+			//转换节点坐标
+			m.point.x = Jx1 + (int)p_Line_Distance.getDistance(x1, y1, x4, y4, tmp.point.x, tmp.point.y);
+			m.point.y = Jy1 + (int)p_Line_Distance.getDistance(x1, y1, x2, y2, tmp.point.x, tmp.point.y);
+			//将转换后的节点新坐标加入关节点容器中
+			v_Joint.add(m);
+		}
+				
+    }
+    public void divide_Layer(){
+    	//获取边框中点横坐标
+    	double middle = (Jx1 + Jx2)/2;
+    	int count = 0;
+    	//获取点并添加到vector1容器中
+    	for(int i=0; i<v_Joint.size();i++){
+    		MyPoint tmp = (MyPoint) v_Joint.elementAt(i);
+    		
+    		//夹逼中间的关节
+    		for(int j=0; j<(int)width_Distance; j++){
+    			Boolean bool = tmp.point.x > middle-j && tmp.point.x < middle+j;
+    			//获取三个点之后，退出循环
+    			if(count >= 3){
+    				return;
+    			}
+    			//
+    			if(bool){
+    				//循环pointsVector容器，寻找与tmp点相对应的点对象
+    				for(int k=0; k<pointsVector.size();k++){
+    	    			MyPoint pt = (MyPoint) pointsVector.elementAt(k);
+    	    			if(tmp.cutFlag == pt.cutFlag){
+    	    				//创建新容器的MyPoint元素
+    	    				MyPoint m = new MyPoint();
+    	    				m.point.x = pt.point.x;
+    	    				m.point.y = pt.point.y;
+    	    				//将得到的点去除
+    	    				pointsVector.removeElementAt(k);
+    	    				
+    	    				//把点加入容器
+    	    				vector1.add(m);
+    	    			}
+    	    		}
+    				//记录加入点的数量
+    				count++;
+    			}
+    		}
+    		
+    		
+    		
+    		
+    	}
+    }
+    //
+    for(int i=0; i<v_Joint.size();i++){
+    	MyPoint tmp = (MyPoint) v_Joint.elementAt(i);
+    	
+    	//夹逼中间的关节
+    	for(int j=0; j<(int)width_Distance; j++){
+    		Boolean bool = tmp.point.x > middle-j && tmp.point.x < middle+j;
+    		//获取三个点之后，退出循环
+    		if(count >= 3){
+    			return;
+    		}
+    		//
+    		if(bool){
+    			//循环pointsVector容器，寻找与tmp点相对应的点对象
+    			for(int k=0; k<pointsVector.size();k++){
+    				MyPoint pt = (MyPoint) pointsVector.elementAt(k);
+    				if(tmp.cutFlag == pt.cutFlag){
+    					//创建新容器的MyPoint元素
+    					MyPoint m = new MyPoint();
+    					m.point.x = pt.point.x;
+    					m.point.y = pt.point.y;
+    					//将得到的点去除
+    					pointsVector.removeElementAt(i);
+    					
+    					//把点加入容器
+    					vector1.add(m);
+    				}
+    			}
+    			//记录加入点的数量
+    			count++;
+    		}
+    	}
+    	
+//	double Angle = getAngle();
+//	public double getAngle() {
+//		double a = PointToLine_Distance.lineSpace(x3,y3,x2,y2);
+//		double b = PointToLine_Distance.lineSpace(x3,y3,x4,y4);
+//		double c = PointToLine_Distance.lineSpace(x2,y2,x4,y4);
+//		
+//		//计算余弦值
+//		double cosine_Value = (double)(a*a + b*b -c*c )/(2*a*b);
+//		//计算角度
+//		double angle = Math.acos(cosine_Value);
+//		//坐标转换
+//		Jx1=(X1-Y1)Math.sin（angle);	
+//		Jy1=(X1+Y1)Math.sin（angle);
+//		Jx2=(X2+Y2)Math.sin（angle);
+//		Jy2=(Y2-X2)Math.sin（angle);
+//		
+//		return 0;
+//	}
+}

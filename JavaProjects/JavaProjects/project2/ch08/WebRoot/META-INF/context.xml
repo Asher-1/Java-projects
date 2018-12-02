@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+  <Resource
+    name="jdbc/SchoolEbay"
+    type="javax.sql.DataSource"
+    password="7726862"
+    driverClassName="com.mysql.jdbc.Driver"
+    maxIdle="2"
+    maxWait="5000"
+    username="sa"
+    url="jdbc:microsoft:sqlserver://localhost:1433/SchoolEbay"
+    maxActive="4"/>
+</Context>

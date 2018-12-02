@@ -1,0 +1,160 @@
+/**
+ * 
+ */
+package cn.detector.view;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.MenuBar;
+import java.awt.Panel;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTree;
+import javax.swing.tree.DefaultMutableTreeNode;
+
+import cn.detector.listener.MenuClickListener;
+import cn.detector.util.Goods;
+import cn.detector.util.UiUtil;
+
+/**
+ * @author Administrator
+
+ *
+ */
+
+public class WindowOperation extends JFrame {
+	private JFileChooser chooser;
+	Point point1 = null, point2 = null;
+	JTree tree;
+	
+	JMenuBar menuBar;
+	JMenu menu1,menu2,menu3,menu4;
+	JMenuItem openItem, editItem, storeItem;
+	WindowOperation(){}
+	WindowOperation(String title){
+		setTitle(title);
+    	init();
+    	UiUtil.setFrameSize(this);
+    	UiUtil.setFrameImage(this);
+    	
+    	
+//    	getContentPane().add(new Framepanel());
+//		pack();
+    	setLayout(new BorderLayout());
+//    	Toolkit kit = Toolkit.getDefaultToolkit();
+    	
+//    	setVisible(true);
+//    	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	
+    }
+
+	/**
+	 * 
+	 */
+	private void init() {
+		//设置菜单
+		menuBar =new JMenuBar();
+		menu1 =new JMenu("注解（E）");
+		menu2 =new JMenu("截取");
+		menu3 =new JMenu("帮助（H）");
+		menu4 =new JMenu("退出（F）");
+		openItem = new JMenuItem("打开图片");
+		editItem = new JMenuItem("编辑");
+		storeItem = new JMenuItem("保存");
+		menu1.add(openItem);
+		menu1.add(editItem);
+		menu1.add(storeItem);
+		menuBar.add(menu1);
+		menuBar.add(menu2);
+		menuBar.add(menu3);
+		menuBar.add(menu4);
+		setJMenuBar(menuBar);
+		//建立数表
+		DefaultMutableTreeNode root = new DefaultMutableTreeNode("商品");//根节点
+		DefaultMutableTreeNode nodeTv = new DefaultMutableTreeNode("电视机类");//节点
+		DefaultMutableTreeNode nodePhone = new DefaultMutableTreeNode("手机类");//节点
+		DefaultMutableTreeNode tv1 = new DefaultMutableTreeNode(new Goods("长虹电视",5699));//节点
+		DefaultMutableTreeNode tv2 = new DefaultMutableTreeNode(new Goods("海尔电视",7832));//节点
+		DefaultMutableTreeNode phone1 = new DefaultMutableTreeNode(new Goods("诺基亚手机",3600));//节点
+		DefaultMutableTreeNode phone2 = new DefaultMutableTreeNode(new Goods("三星手机",2155));//节点
+		nodeTv.add(tv1);
+		nodeTv.add(tv2);
+		nodePhone.add(phone1);
+		nodePhone.add(phone2);
+		root.add(nodeTv);
+		root.add(nodePhone);
+		tree = new JTree(root);
+		tree.setPreferredSize(new Dimension(200,800));
+		add(new JScrollPane(tree),BorderLayout.WEST);
+		
+		
+		//创建并放置面板来存放图片
+		FramePanel framePanel = new FramePanel();
+//		framePanel.requestFocus();
+		PicturePanel picturePanel = new PicturePanel();
+		picturePanel.requestFocus();
+//		picturePanel.add(framePanel,new GridLayout(1,1));
+//		add(picturePanel,BorderLayout.CENTER);
+//		add(framePanel,BorderLayout.CENTER);
+//		JLayeredPane layeredPane = new JLayeredPane();
+//		add(layeredPane,BorderLayout.CENTER);
+//		layeredPane.add(picturePanel,JLayeredPane.POPUP_LAYER);
+//		layeredPane.add(framePanel,JLayeredPane.DRAG_LAYER);
+//		
+		getLayeredPane().add(picturePanel,JLayeredPane.POPUP_LAYER);
+		getLayeredPane().add(framePanel,JLayeredPane.DRAG_LAYER);
+//		getContentPane().add(picturePanel,BorderLayout.CENTER);//获取内容面板，并将panel加入内容面板中
+		//((JComponent) getContentPane()).setOpaque(false);
+		/*设置面板为透明色，这样整个框架的背景就再是内容面板的背景色，而是第二层中加载的图片
+		 *JFrame中层次结构为:第一层(JRootPane)->第二层（JlayerPane)->第三层（ContentPane)
+		 */
+		//panel.setOpaque(false);
+		
+		pack();
+		
+
+		
+		
+		
+		//创建MenuClicklistener监视器
+		MenuClickListener menulistener = new MenuClickListener();
+		menulistener.setPanel(picturePanel);//为监视器设置panel
+		
+		openItem.addActionListener(menulistener);
+        
+ 
+        
+        
+//        public static void setBack(JFrame jf,ImageIcon img){ 
+//    		((JPanel)jf.getContentPane()).setOpaque(false); 
+////    		ImageIcon img = new ImageIcon("c://Sunset.jpg"); 
+//    		JLabel background = new JLabel(img);jf.getLayeredPane().add(background, new Integer(Integer.MIN_VALUE)); 
+//    		background.setBounds(0, 0, img.getIconWidth(), img.getIconHeight()); 
+//    		} 
+
+        
+        
+        
+        
+        
+        }
+		
+}

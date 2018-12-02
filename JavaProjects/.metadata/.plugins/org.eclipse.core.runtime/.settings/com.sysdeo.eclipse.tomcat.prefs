@@ -1,0 +1,10 @@
+configMode=serverFile
+contextsDir=G\:\\develop\\apache-tomcat-9.0.0.M1\\conf\\Catalina\\localhost
+eclipse.preferences.version=1
+managerUrl=http\://localhost\:8080/manager
+projectsInSourcePath=AnalyzeSkeleton;AnalyzeSkeletonTest;eclipse_demo;
+tomcatBase=G\:\\develop\\apache-tomcat-9.0.0.M1
+tomcatConfigFile=G\:\\develop\\apache-tomcat-9.0.0.M1\\conf\\server.xml
+tomcatDir=G\:\\develop\\apache-tomcat-9.0.0.M1
+tomcatJRE=1451366748075
+tomcatVersion=tomcatV7
